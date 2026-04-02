@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SyncSentrix — O software cloud empresarial que centraliza, sincroniza e potencializa a inteligência operacional da sua empresa em tempo real." />
+  <title>SyncSentrix — Cloud Enterprise Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="nav__container">
+      <a href="#" class="nav__logo" id="nav-logo">
+        <svg class="nav__logo-icon" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="8" fill="#2F4B7C"/>
+          <path d="M8 16C8 11.582 11.582 8 16 8" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M24 16C24 20.418 20.418 24 16 24" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="16" cy="16" r="3" fill="#ffffff"/>
+          <path d="M20 9L23 12L20 15" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 17L9 20L12 23" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="nav__logo-text">SyncSentrix</span>
+      </a>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="#features" class="nav__link">Soluções</a></li>
+        <li><a href="#how" class="nav__link">Como funciona</a></li>
+        <li><a href="#demo" class="nav__link">Demo</a></li>
+        <li><a href="#metrics" class="nav__link">Resultados</a></li>
+        <li><a href="#team" class="nav__link">Equipe</a></li>
+        <li><a href="#testimonials" class="nav__link">Clientes</a></li>
+      </ul>
+      <div class="nav__actions">
+        <a href="#" class="btn btn--ghost" id="nav-login">Entrar</a>
+        <a href="#demo" class="btn btn--primary" id="nav-cta">Ver Demo</a>
+      </div>
+      <button class="nav__hamburger" id="nav-hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero__bg">
+      <div class="hero__orb hero__orb--1"></div>
+      <div class="hero__orb hero__orb--2"></div>
+      <div class="hero__grid"></div>
+    </div>
+    <div class="hero__container">
+      <div class="hero__badge" id="hero-badge">
+        <span class="badge__dot"></span>
+        Plataforma Enterprise · Disponível 24/7
+      </div>
+      <h1 class="hero__title" id="hero-title">
+        Inteligência Operacional<br />
+        <span class="hero__title--accent">Sincronizada em Nuvem</span>
+      </h1>
+      <p class="hero__subtitle" id="hero-subtitle">
+        SyncSentrix centraliza dados, processos e equipes em uma única plataforma cloud.
+        Tome decisões mais rápidas, reduza custos e escale com confiança.
+      </p>
+      <div class="hero__actions" id="hero-actions">
+        <a href="#demo" class="btn btn--hero-primary" id="hero-cta-primary">
+          Explorar demonstração
+          <i class="bi bi-arrow-right"></i>
+        </a>
+        <a href="#how" class="btn btn--hero-ghost" id="hero-cta-secondary">
+          <i class="bi bi-play-circle"></i>
+          Como funciona
+        </a>
+      </div>
+      <div class="hero__social-proof" id="hero-social-proof">
+        <div class="hero__avatars">
+          <div class="avatar" style="background:#2F4B7C;">C</div>
+          <div class="avatar" style="background:#3D5D91;">G</div>
+          <div class="avatar" style="background:#5578A8;">G</div>
+          <div class="avatar" style="background:#1E3259;">N</div>
+        </div>
+        <p class="hero__proof-text">+2.400 empresas já confiam no SyncSentrix</p>
+      </div>
+    </div>
+    <div class="hero__dashboard-wrapper" id="hero-dashboard">
+      <div class="hero__dashboard">
+        <div class="dashboard__header">
+          <div class="dashboard__dot dashboard__dot--red"></div>
+          <div class="dashboard__dot dashboard__dot--yellow"></div>
+          <div class="dashboard__dot dashboard__dot--green"></div>
+          <span class="dashboard__title">SyncSentrix — Visão Geral</span>
+        </div>
+        <div class="dashboard__body">
+          <div class="dashboard__sidebar">
+            <div class="dash-nav-item dash-nav-item--active">
+              <i class="bi bi-grid-1x2"></i>Dashboard
+            </div>
+            <div class="dash-nav-item"><i class="bi bi-kanban"></i>Projetos</div>
+            <div class="dash-nav-item"><i class="bi bi-bar-chart-line"></i>Relatórios</div>
+            <div class="dash-nav-item"><i class="bi bi-people"></i>Equipe</div>
+          </div>
+          <div class="dashboard__main">
+            <div class="dash-kpi-row">
+              <div class="dash-kpi" id="kpi-1">
+                <span class="dash-kpi__label">Uptime</span>
+                <span class="dash-kpi__value">99.97%</span>
+                <span class="dash-kpi__change dash-kpi__change--up"><i class="bi bi-arrow-up-short"></i> 0.03%</span>
+              </div>
+              <div class="dash-kpi" id="kpi-2">
+                <span class="dash-kpi__label">Processos Ativos</span>
+                <span class="dash-kpi__value">1.248</span>
+                <span class="dash-kpi__change dash-kpi__change--up"><i class="bi bi-arrow-up-short"></i> 12%</span>
+              </div>
+              <div class="dash-kpi" id="kpi-3">
+                <span class="dash-kpi__label">Economia Gerada</span>
+                <span class="dash-kpi__value">R$184k</span>
+                <span class="dash-kpi__change dash-kpi__change--up"><i class="bi bi-arrow-up-short"></i> 31%</span>
+              </div>
+            </div>
+            <div class="dash-chart">
+              <div class="dash-chart__label">Performance Operacional — Últimos 7 dias</div>
+              <div class="dash-chart__bars">
+                <div class="dash-bar" style="--h: 55%"><span>Seg</span></div>
+                <div class="dash-bar" style="--h: 72%"><span>Ter</span></div>
+                <div class="dash-bar" style="--h: 64%"><span>Qua</span></div>
+                <div class="dash-bar" style="--h: 88%"><span>Qui</span></div>
+                <div class="dash-bar" style="--h: 79%"><span>Sex</span></div>
+                <div class="dash-bar dash-bar--active" style="--h: 95%"><span>Sáb</span></div>
+                <div class="dash-bar" style="--h: 82%"><span>Dom</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="hero__float hero__float--1" id="hero-float-1">
+        <i class="bi bi-stars"></i>
+        <div>
+          <div class="float__title">Rating Enterprise</div>
+          <div class="float__value">4.9 / 5.0</div>
+        </div>
+      </div>
+      <div class="hero__float hero__float--2" id="hero-float-2">
+        <i class="bi bi-graph-up-arrow"></i>
+        <div>
+          <div class="float__title">Produtividade</div>
+          <div class="float__value">+47% média</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEMO INTERATIVA -->
+  <section class="demo" id="demo">
+    <div class="demo__container">
+      <div class="section__header">
+        <span class="section__badge">Demo Interativa</span>
+        <h2 class="section__title">Veja o SyncSentrix<br/>em ação real</h2>
+        <p class="section__subtitle">Explore os módulos da plataforma com dados simulados ao vivo. Interaja, navegue e sinta como é trabalhar com inteligência operacional de verdade.</p>
+      </div>
+      <div class="demo__panel" id="demo-panel">
+        <div class="demo__tabs" id="demo-tabs">
+          <button class="demo__tab demo__tab--active" data-tab="ponto" id="tab-ponto">
+            <i class="bi bi-person-check"></i> Ponto Eletrônico
+          </button>
+          <button class="demo__tab" data-tab="maquinas" id="tab-maquinas">
+            <i class="bi bi-cpu"></i> Máquinas
+          </button>
+          <button class="demo__tab" data-tab="relatorio" id="tab-relatorio">
+            <i class="bi bi-bar-chart-line"></i> Relatório
+          </button>
+        </div>
+        <div class="demo__content">
+
+          <!-- Ponto Eletrônico -->
+          <div class="demo__tab-content demo__tab-content--active" id="content-ponto">
+            <div class="demo__bar">
+              <div class="demo__live-badge"><span class="badge__dot"></span> Dados ao vivo</div>
+              <div class="demo__bar-right">
+                <span class="demo__timestamp" id="ponto-timestamp"></span>
+                <button class="demo__refresh-btn" id="refresh-ponto" title="Atualizar">
+                  <i class="bi bi-arrow-clockwise"></i>
+                </button>
+              </div>
+            </div>
+            <div class="demo__table-wrap">
+              <table class="demo__table">
+                <thead>
+                  <tr>
+                    <th>Colaborador</th>
+                    <th>Setor</th>
+                    <th>Entrada</th>
+                    <th>Horas</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="ponto-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Máquinas -->
+          <div class="demo__tab-content" id="content-maquinas">
+            <div class="demo__bar">
+              <div class="demo__live-badge"><span class="badge__dot"></span> Sensores ao vivo</div>
+              <div class="demo__bar-right">
+                <span class="demo__timestamp" id="maquinas-timestamp"></span>
+                <button class="demo__refresh-btn" id="refresh-maquinas" title="Atualizar">
+                  <i class="bi bi-arrow-clockwise"></i>
+                </button>
+              </div>
+            </div>
+            <div class="demo__machines-grid" id="machines-grid"></div>
+          </div>
+
+          <!-- Relatório -->
+          <div class="demo__tab-content" id="content-relatorio">
+            <div class="demo__bar">
+              <div class="demo__live-badge"><span class="badge__dot"></span> Relatório do dia</div>
+              <div class="demo__bar-right">
+                <span class="demo__timestamp" id="relatorio-timestamp"></span>
+                <button class="demo__refresh-btn" id="refresh-relatorio" title="Atualizar">
+                  <i class="bi bi-arrow-clockwise"></i>
+                </button>
+              </div>
+            </div>
+            <div class="demo__report" id="demo-report"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOGOS -->
+  <section class="logos" id="logos">
+    <div class="logos__container">
+      <p class="logos__label">Empresas que confiam no SyncSentrix</p>
+      <div class="logos__track">
+        <div class="logos__inner" id="logos-inner">
+          <div class="logo-item"><img src="imgs/amazon-logo.png"   alt="Amazon" /></div>
+          <div class="logo-item"><img src="imgs/dogde-logo.png"    alt="Dodge" /></div>
+          <div class="logo-item"><img src="imgs/embraer-logo.png"  alt="Embraer" /></div>
+          <div class="logo-item"><img src="imgs/nvidia-logo.png"   alt="Nvidia" /></div>
+          <div class="logo-item"><img src="imgs/petrobras-logo.png" alt="Petrobras" /></div>
+          <div class="logo-item"><img src="imgs/toyota-logo.png"   alt="Toyota" /></div>
+          <div class="logo-item"><img src="imgs/vw-logo.png"       alt="Volkswagen" /></div>
+          <div class="logo-item"><img src="imgs/amazon-logo.png"   alt="Amazon" /></div>
+          <div class="logo-item"><img src="imgs/dogde-logo.png"    alt="Dodge" /></div>
+          <div class="logo-item"><img src="imgs/embraer-logo.png"  alt="Embraer" /></div>
+          <div class="logo-item"><img src="imgs/nvidia-logo.png"   alt="Nvidia" /></div>
+          <div class="logo-item"><img src="imgs/petrobras-logo.png" alt="Petrobras" /></div>
+          <div class="logo-item"><img src="imgs/toyota-logo.png"   alt="Toyota" /></div>
+          <div class="logo-item"><img src="imgs/vw-logo.png"       alt="Volkswagen" /></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features" id="features">
+    <div class="features__container">
+      <div class="section__header">
+        <span class="section__badge">Soluções Enterprise</span>
+        <h2 class="section__title">Tudo que sua empresa precisa,<br/>em um único lugar</h2>
+        <p class="section__subtitle">Do operacional ao estratégico, SyncSentrix conecta cada camada do seu negócio com precisão e segurança.</p>
+      </div>
+      <div class="features__grid" id="features-grid">
+        <div class="feature-card feature-card--large" id="feature-1">
+          <div class="feature-card__icon"><i class="bi bi-speedometer2"></i></div>
+          <h3 class="feature-card__title">Inteligência de Dados em Tempo Real</h3>
+          <p class="feature-card__desc">Painéis dinâmicos e relatórios automatizados que transformam dados brutos em decisões estratégicas. Alertas inteligentes, análise preditiva e visualizações avançadas — tudo sincronizado em milissegundos.</p>
+          <div class="feature-card__visual">
+            <div class="mini-chart">
+              <div class="mini-bar" style="--h:40%"></div>
+              <div class="mini-bar" style="--h:65%"></div>
+              <div class="mini-bar" style="--h:50%"></div>
+              <div class="mini-bar mini-bar--accent" style="--h:85%"></div>
+              <div class="mini-bar" style="--h:70%"></div>
+              <div class="mini-bar" style="--h:90%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="feature-card" id="feature-2">
+          <div class="feature-card__icon"><i class="bi bi-plugin"></i></div>
+          <h3 class="feature-card__title">Integração Universal</h3>
+          <p class="feature-card__desc">Conecta com mais de 200 ferramentas — ERP, CRM, BI, APIs REST e webhooks. Sem fricção, sem código.</p>
+        </div>
+        <div class="feature-card" id="feature-3">
+          <div class="feature-card__icon"><i class="bi bi-shield-lock"></i></div>
+          <h3 class="feature-card__title">Segurança de Nível Bancário</h3>
+          <p class="feature-card__desc">Criptografia AES-256, conformidade com LGPD e SOC 2. Seus dados protegidos com os mais altos padrões globais.</p>
+        </div>
+        <div class="feature-card" id="feature-4">
+          <div class="feature-card__icon"><i class="bi bi-cpu"></i></div>
+          <h3 class="feature-card__title">Automação Inteligente</h3>
+          <p class="feature-card__desc">Workflows automatizados com IA que eliminam tarefas repetitivas. Configure uma vez, ganhe horas toda semana.</p>
+        </div>
+        <div class="feature-card" id="feature-5">
+          <div class="feature-card__icon"><i class="bi bi-people-fill"></i></div>
+          <h3 class="feature-card__title">Colaboração em Equipe</h3>
+          <p class="feature-card__desc">Espaços de trabalho compartilhados, controle de permissões granular e comunicação integrada entre departamentos.</p>
+        </div>
+        <div class="feature-card feature-card--highlight" id="feature-6">
+          <div class="feature-card__icon"><i class="bi bi-activity"></i></div>
+          <h3 class="feature-card__title">Monitoramento Contínuo</h3>
+          <p class="feature-card__desc">Visibilidade total de toda a operação com uptime de 99.97%. SLA garantido em contrato.</p>
+          <div class="feature-card__tag">99.97% Uptime SLA</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how" id="how">
+    <div class="how__container">
+      <div class="section__header">
+        <span class="section__badge">Processo Simples</span>
+        <h2 class="section__title">Implantação em 3 passos,<br/>resultados desde o dia 1</h2>
+      </div>
+      <div class="steps" id="steps">
+        <div class="step" id="step-1">
+          <div class="step__number">01</div>
+          <div class="step__content">
+            <h3 class="step__title">Conecte seus sistemas</h3>
+            <p class="step__desc">Em minutos, integre suas ferramentas atuais. Nossa equipe de onboarding guia cada detalhe da migração com zero downtime e suporte 24h.</p>
+          </div>
+        </div>
+        <div class="step" id="step-2">
+          <div class="step__number">02</div>
+          <div class="step__content">
+            <h3 class="step__title">Configure seu fluxo</h3>
+            <p class="step__desc">Personalize dashboards, automatize processos e defina alertas inteligentes sem precisar de conhecimento técnico avançado.</p>
+          </div>
+        </div>
+        <div class="step" id="step-3">
+          <div class="step__number">03</div>
+          <div class="step__content">
+            <h3 class="step__title">Monitore e escale</h3>
+            <p class="step__desc">Acompanhe resultados em tempo real. SyncSentrix cresce junto com sua empresa — sem limites de usuários ou dados.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- METRICS -->
+  <section class="metrics" id="metrics">
+    <div class="metrics__container">
+      <div class="metrics__content">
+        <span class="section__badge section__badge--light">Resultados Comprovados</span>
+        <h2 class="metrics__title">Números que<br/>falam por si</h2>
+        <p class="metrics__subtitle">Empresas que adotam SyncSentrix reportam melhorias concretas já nos primeiros 30 dias de uso.</p>
+        <a href="#demo" class="btn btn--primary" id="metrics-cta">Quero esses resultados</a>
+      </div>
+      <div class="metrics__grid">
+        <div class="metric-card" id="metric-1">
+          <div class="metric-card__value" data-target="47">0<span>%</span></div>
+          <div class="metric-card__label">Aumento médio de produtividade</div>
+        </div>
+        <div class="metric-card" id="metric-2">
+          <div class="metric-card__value" data-target="62">0<span>%</span></div>
+          <div class="metric-card__label">Redução de retrabalho operacional</div>
+        </div>
+        <div class="metric-card" id="metric-3">
+          <div class="metric-card__value" data-target="99.97" data-suffix="%">0<span>%</span></div>
+          <div class="metric-card__label">SLA de disponibilidade garantido</div>
+        </div>
+        <div class="metric-card" id="metric-4">
+          <div class="metric-card__value" data-target="8">0<span>x</span></div>
+          <div class="metric-card__label">ROI médio no primeiro ano</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section class="team" id="team">
+    <div class="team__container">
+      <div class="section__header">
+        <span class="section__badge">Nossa Equipe</span>
+        <h2 class="section__title">As pessoas por trás<br/>do SyncSentrix</h2>
+        <p class="section__subtitle">Um time multidisciplinar apaixonado por tecnologia, produto e experiência do usuário.</p>
+      </div>
+      <div class="team__grid">
+
+        <div class="team-card" id="team-caio">
+          <div class="team-card__photo-wrap">
+            <img class="team-card__photo" src="imgs/team/caio.jpg" alt="Caio Mega"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="team-card__avatar-fallback" style="display:none">CM</div>
+          </div>
+          <div class="team-card__info">
+            <h3 class="team-card__name">Caio Mega</h3>
+            <span class="team-card__role-badge">Dev Geral &amp; Frontend UI/UX</span>
+          </div>
+          <a href="https://github.com/caiomega" target="_blank" rel="noopener" class="btn btn--github" id="github-caio">
+            <i class="bi bi-github"></i> GitHub
+          </a>
+        </div>
+
+        <div class="team-card" id="team-guilherme-s">
+          <div class="team-card__photo-wrap">
+            <img class="team-card__photo" src="imgs/team/guilherme-s.jpg" alt="Guilherme Scarparo"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="team-card__avatar-fallback" style="display:none">GS</div>
+          </div>
+          <div class="team-card__info">
+            <h3 class="team-card__name">Guilherme Scarparo</h3>
+            <span class="team-card__role-badge">PO &amp; Fullstack</span>
+          </div>
+          <a href="https://github.com/guilhermescarparo" target="_blank" rel="noopener" class="btn btn--github" id="github-guilherme-s">
+            <i class="bi bi-github"></i> GitHub
+          </a>
+        </div>
+
+        <div class="team-card" id="team-guilherme-m">
+          <div class="team-card__photo-wrap">
+            <img class="team-card__photo" src="imgs/team/guilherme-m.jpg" alt="Guilherme Machado"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="team-card__avatar-fallback" style="display:none">GM</div>
+          </div>
+          <div class="team-card__info">
+            <h3 class="team-card__name">Guilherme Machado</h3>
+            <span class="team-card__role-badge">Backend</span>
+          </div>
+          <a href="https://github.com/guilhermemachado" target="_blank" rel="noopener" class="btn btn--github" id="github-guilherme-m">
+            <i class="bi bi-github"></i> GitHub
+          </a>
+        </div>
+
+        <div class="team-card" id="team-nubia">
+          <div class="team-card__photo-wrap">
+            <img class="team-card__photo" src="imgs/team/nubia.jpg" alt="Núbia Paiva"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="team-card__avatar-fallback" style="display:none">NP</div>
+          </div>
+          <div class="team-card__info">
+            <h3 class="team-card__name">Núbia Paiva</h3>
+            <span class="team-card__role-badge">Scrum Master &amp; BD</span>
+          </div>
+          <a href="https://github.com/nubiapaiva" target="_blank" rel="noopener" class="btn btn--github" id="github-nubia">
+            <i class="bi bi-github"></i> GitHub
+          </a>
+        </div>
+
+        <div class="team-card" id="team-bruna">
+          <div class="team-card__photo-wrap">
+            <img class="team-card__photo" src="imgs/team/bruna.jpg" alt="Bruna Moraes"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="team-card__avatar-fallback" style="display:none">BM</div>
+          </div>
+          <div class="team-card__info">
+            <h3 class="team-card__name">Bruna Moraes</h3>
+            <span class="team-card__role-badge">Documentação</span>
+          </div>
+          <a href="https://github.com/brunamoraes" target="_blank" rel="noopener" class="btn btn--github" id="github-bruna">
+            <i class="bi bi-github"></i> GitHub
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials" id="testimonials">
+    <div class="testimonials__container">
+      <div class="section__header">
+        <span class="section__badge">Depoimentos</span>
+        <h2 class="section__title">O que nossos clientes dizem</h2>
+      </div>
+      <div class="testimonials__grid" id="testimonials-grid">
+        <div class="testimonial-card" id="testimonial-1">
+          <div class="testimonial-card__stars">
+            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+          </div>
+          <p class="testimonial-card__text">"SyncSentrix transformou completamente nossa linha de produção em São José dos Campos. Reduzimos 41% do downtime não planejado e nossa equipe de engenharia finalmente tem visibilidade em tempo real de cada etapa do processo."</p>
+          <div class="testimonial-card__author">
+            <div class="testimonial-card__avatar">CF</div>
+            <div>
+              <p class="testimonial-card__name">Carlos Figueiredo</p>
+              <p class="testimonial-card__role">Diretor de Operações · Embraer</p>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card" id="testimonial-2">
+          <div class="testimonial-card__stars">
+            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+          </div>
+          <p class="testimonial-card__text">"Integramos o SyncSentrix em nossas plataformas de monitoramento de campo em menos de uma semana. A centralização de dados críticos e os alertas preditivos elevaram nossa eficiência operacional em 53%."</p>
+          <div class="testimonial-card__author">
+            <div class="testimonial-card__avatar">AL</div>
+            <div>
+              <p class="testimonial-card__name">Adriana Lustosa</p>
+              <p class="testimonial-card__role">VP Transformação Digital · Petrobras</p>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card" id="testimonial-3">
+          <div class="testimonial-card__stars">
+            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+          </div>
+          <p class="testimonial-card__text">"Nossa fábrica em Sorocaba adotou o SyncSentrix para rastreamento de ponto e monitoramento de máquinas. O ganho de produtividade foi de 38% no primeiro trimestre. A plataforma escala perfeitamente."</p>
+          <div class="testimonial-card__author">
+            <div class="testimonial-card__avatar">HO</div>
+            <div>
+              <p class="testimonial-card__name">Hiroshi Okamoto</p>
+              <p class="testimonial-card__role">Gerente de Tecnologia Industrial · Toyota Brasil</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="cta-final" id="cta-final">
+    <div class="cta-final__bg">
+      <div class="cta-final__orb"></div>
+    </div>
+    <div class="cta-final__container">
+      <h2 class="cta-final__title">Pronto para transformar<br/>sua operação?</h2>
+      <p class="cta-final__subtitle">Comece gratuitamente por 14 dias. Sem cartão de crédito. Suporte desde o primeiro acesso.</p>
+      <div class="cta-final__actions">
+        <a href="#demo" class="btn btn--cta-primary" id="cta-final-primary">Ver demonstração ao vivo</a>
+        <a href="#" class="btn btn--cta-ghost" id="cta-final-secondary">Agendar reunião</a>
+      </div>
+      <p class="cta-final__guarantee">
+        <i class="bi bi-shield-check"></i>
+        Dados seguros · Cancele quando quiser · LGPD em conformidade
+      </p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" id="footer">
+    <div class="footer__container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="#" class="nav__logo">
+            <svg class="nav__logo-icon" viewBox="0 0 32 32" fill="none">
+              <rect width="32" height="32" rx="8" fill="#2F4B7C"/>
+              <path d="M8 16C8 11.582 11.582 8 16 8" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M24 16C24 20.418 20.418 24 16 24" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="16" cy="16" r="3" fill="#ffffff"/>
+            </svg>
+            <span class="nav__logo-text">SyncSentrix</span>
+          </a>
+          <p class="footer__tagline">Inteligência operacional sincronizada em nuvem para empresas que lideram.</p>
+        </div>
+        <div class="footer__links">
+          <div class="footer__col">
+            <h4>Produto</h4>
+            <a href="#features">Soluções</a>
+            <a href="#demo">Demo</a>
+            <a href="#how">Como funciona</a>
+            <a href="#">Integrações</a>
+          </div>
+          <div class="footer__col">
+            <h4>Empresa</h4>
+            <a href="#team">Nossa equipe</a>
+            <a href="#">Blog</a>
+            <a href="#">Carreiras</a>
+            <a href="#">Parceiros</a>
+          </div>
+          <div class="footer__col">
+            <h4>Suporte</h4>
+            <a href="#">Central de ajuda</a>
+            <a href="#">Status do sistema</a>
+            <a href="#">API Docs</a>
+            <a href="#">Contato</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>© 2026 SyncSentrix. Todos os direitos reservados.</p>
+        <div class="footer__legal">
+          <a href="#">Privacidade</a>
+          <a href="#">Termos de uso</a>
+          <a href="#">LGPD</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
