@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SyncSentrix — Relatórios Inteligentes | Demo Completa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Demo App Styles */
+    .demo-app {
+      min-height: 100vh;
+      background: var(--bg-primary);
+    }
+
+    .demo-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(9, 9, 11, 0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 0 var(--space-xl);
+    }
+
+    .demo-header__inner {
+      max-width: 1600px;
+      margin: 0 auto;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      gap: var(--space-xl);
+    }
+
+    .demo-header__back {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      color: var(--text-secondary);
+      font-size: 14px;
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      transition: all 0.2s ease;
+    }
+
+    .demo-header__back:hover {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+    }
+
+    .demo-header__title {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+
+    .demo-header__icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, var(--accent-green), #16A34A);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+    }
+
+    .demo-header__text h1 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .demo-header__text span {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .demo-header__actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      margin-left: auto;
+    }
+
+    .demo-main {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: var(--space-xl);
+    }
+
+    /* Report Types */
+    .report-types {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--space-lg);
+      margin-bottom: var(--space-2xl);
+    }
+
+    .report-type {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: var(--space-xl);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .report-type::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gradient-primary);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .report-type:hover {
+      border-color: var(--border-default);
+      transform: translateY(-4px);
+    }
+
+    .report-type.active::before {
+      opacity: 1;
+    }
+
+    .report-type.active {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 30px rgba(0, 212, 255, 0.1);
+    }
+
+    .report-type__header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+
+    .report-type__icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+
+    .report-type__icon--blue {
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--accent-blue);
+    }
+
+    .report-type__icon--green {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--accent-green);
+    }
+
+    .report-type__icon--purple {
+      background: rgba(124, 58, 237, 0.15);
+      color: var(--accent-purple);
+    }
+
+    .report-type__icon--orange {
+      background: rgba(249, 115, 22, 0.15);
+      color: var(--accent-orange);
+    }
+
+    .report-type__title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .report-type__desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Dashboard Grid */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: var(--space-xl);
+      margin-bottom: var(--space-xl);
+    }
+
+    /* Main Chart */
+    .main-chart {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: var(--space-xl);
+    }
+
+    .main-chart__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-xl);
+    }
+
+    .main-chart__title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .period-selector {
+      display: flex;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 4px;
+    }
+
+    .period-selector__btn {
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .period-selector__btn.active {
+      background: var(--gradient-primary);
+      color: var(--bg-primary);
+    }
+
+    .period-selector__btn:hover:not(.active) {
+      color: var(--text-primary);
+    }
+
+    .chart-area {
+      height: 320px;
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+      padding: var(--space-lg) 0;
+      border-bottom: 1px solid var(--border-subtle);
+      position: relative;
+    }
+
+    .chart-area::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 80px;
+      border-top: 1px dashed var(--border-subtle);
+    }
+
+    .chart-area::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 160px;
+      border-top: 1px dashed var(--border-subtle);
+    }
+
+    .chart-bar-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .chart-bar-wrap {
+      width: 100%;
+      height: 280px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .chart-bar {
+      width: 24px;
+      border-radius: 4px 4px 0 0;
+      transition: all 0.5s ease;
+      position: relative;
+    }
+
+    .chart-bar--primary {
+      background: var(--gradient-primary);
+    }
+
+    .chart-bar--secondary {
+      background: rgba(124, 58, 237, 0.4);
+    }
+
+    .chart-bar:hover::after {
+      content: attr(data-value);
+      position: absolute;
+      top: -28px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-default);
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 11px;
+      color: var(--text-primary);
+      white-space: nowrap;
+    }
+
+    .chart-bar-label {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .chart-legend {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-xl);
+      margin-top: var(--space-lg);
+    }
+
+    .chart-legend__item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .chart-legend__dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+    }
+
+    .chart-legend__dot--primary {
+      background: var(--gradient-primary);
+    }
+
+    .chart-legend__dot--secondary {
+      background: var(--accent-purple);
+    }
+
+    /* Side Stats */
+    .side-stats {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-lg);
+    }
+
+    .side-stat {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: var(--space-xl);
+    }
+
+    .side-stat__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-lg);
+    }
+
+    .side-stat__title {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .side-stat__badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+    }
+
+    .side-stat__badge--up {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--accent-green);
+    }
+
+    .side-stat__badge--down {
+      background: rgba(239, 68, 68, 0.15);
+      color: #EF4444;
+    }
+
+    .side-stat__value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1;
+      margin-bottom: var(--space-md);
+    }
+
+    .side-stat__progress {
+      height: 6px;
+      background: var(--bg-elevated);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+
+    .side-stat__progress-fill {
+      height: 100%;
+      border-radius: var(--radius-full);
+      transition: width 0.5s ease;
+    }
+
+    .side-stat__progress-fill--cyan { background: var(--accent-cyan); }
+    .side-stat__progress-fill--green { background: var(--accent-green); }
+    .side-stat__progress-fill--purple { background: var(--accent-purple); }
+    .side-stat__progress-fill--orange { background: var(--accent-orange); }
+
+    /* Metrics Row */
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xl);
+    }
+
+    .metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: var(--space-xl);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .metric-card__icon {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: var(--space-md);
+    }
+
+    .metric-card__icon--cyan {
+      background: rgba(0, 212, 255, 0.15);
+      color: var(--accent-cyan);
+    }
+
+    .metric-card__icon--green {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--accent-green);
+    }
+
+    .metric-card__icon--purple {
+      background: rgba(124, 58, 237, 0.15);
+      color: var(--accent-purple);
+    }
+
+    .metric-card__icon--orange {
+      background: rgba(249, 115, 22, 0.15);
+      color: var(--accent-orange);
+    }
+
+    .metric-card__value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .metric-card__label {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: var(--space-md);
+    }
+
+    .metric-card__trend {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-top: auto;
+    }
+
+    .metric-card__trend--up {
+      color: var(--accent-green);
+    }
+
+    .metric-card__trend--down {
+      color: #EF4444;
+    }
+
+    /* Data Table */
+    .data-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+    }
+
+    .data-panel__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-xl);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .data-panel__title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .data-table th,
+    .data-table td {
+      padding: 16px 20px;
+      text-align: left;
+    }
+
+    .data-table th {
+      background: rgba(255, 255, 255, 0.02);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .data-table tbody tr {
+      border-bottom: 1px solid var(--border-subtle);
+      transition: all 0.2s ease;
+    }
+
+    .data-table tbody tr:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .data-table tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    .sector-cell {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+
+    .sector-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .sector-icon--cyan {
+      background: rgba(0, 212, 255, 0.15);
+      color: var(--accent-cyan);
+    }
+
+    .sector-icon--green {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--accent-green);
+    }
+
+    .sector-icon--purple {
+      background: rgba(124, 58, 237, 0.15);
+      color: var(--accent-purple);
+    }
+
+    .sector-icon--orange {
+      background: rgba(249, 115, 22, 0.15);
+      color: var(--accent-orange);
+    }
+
+    .efficiency-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .efficiency-badge--high {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--accent-green);
+    }
+
+    .efficiency-badge--medium {
+      background: rgba(249, 115, 22, 0.15);
+      color: var(--accent-orange);
+    }
+
+    .efficiency-badge--low {
+      background: rgba(239, 68, 68, 0.15);
+      color: #EF4444;
+    }
+
+    .mini-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 32px;
+    }
+
+    .mini-chart__bar {
+      width: 4px;
+      background: var(--accent-cyan);
+      border-radius: 2px;
+      transition: height 0.3s ease;
+    }
+
+    /* Export Section */
+    .export-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: var(--space-xl);
+      margin-top: var(--space-xl);
+    }
+
+    .export-section__header {
+      margin-bottom: var(--space-xl);
+    }
+
+    .export-section__title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: var(--space-xs);
+    }
+
+    .export-section__desc {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .export-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: var(--space-lg);
+    }
+
+    .export-option {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: var(--space-xl);
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .export-option:hover {
+      border-color: var(--accent-cyan);
+      transform: translateY(-4px);
+    }
+
+    .export-option__icon {
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-lg);
+      background: rgba(0, 212, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      color: var(--accent-cyan);
+      margin: 0 auto var(--space-md);
+    }
+
+    .export-option__title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .export-option__desc {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* Toast */
+    .toast-container {
+      position: fixed;
+      bottom: var(--space-xl);
+      right: var(--space-xl);
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .toast {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: var(--space-md) var(--space-lg);
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      box-shadow: var(--shadow-lg);
+      animation: toastIn 0.3s ease;
+      min-width: 300px;
+    }
+
+    @keyframes toastIn {
+      from {
+        opacity: 0;
+        transform: translateX(100px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .toast--success { border-color: rgba(34, 197, 94, 0.3); }
+    .toast--success .toast__icon { color: var(--accent-green); }
+
+    .toast__icon { font-size: 20px; }
+    .toast__content { flex: 1; }
+
+    .toast__title {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--text-primary);
+    }
+
+    .toast__message {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .side-stats {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+
+      .side-stat {
+        flex: 1;
+        min-width: 200px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .report-types {
+        grid-template-columns: 1fr;
+      }
+
+      .chart-bar {
+        width: 16px;
+      }
+
+      .metrics-row {
+        grid-template-columns: 1fr;
+      }
+
+      .data-panel {
+        overflow-x: auto;
+      }
+
+      .data-table {
+        min-width: 600px;
+      }
+    }
+
+    /* CUSTOM CURSOR */
+    body { cursor: none; }
+    
+    .cursor__dot {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      background: #fff;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 100001;
+      mix-blend-mode: difference;
+      transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease;
+    }
+
+    .cursor__dot.active {
+      width: 14px;
+      height: 14px;
+    }
+
+    .cursor__ring {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 100000;
+      transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+    }
+
+    .cursor__ring.active {
+      width: 60px;
+      height: 60px;
+      border-color: var(--primary);
+    }
+
+    .cursor__trail {
+      position: fixed;
+      width: 5px;
+      height: 5px;
+      background: var(--primary);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      opacity: 0;
+      z-index: 99999;
+      filter: blur(1px);
+    }
+  </style>
+</head>
+<body>
+  <!-- CUSTOM CURSOR -->
+  <div class="cursor__dot" id="cursor-dot"></div>
+  <div class="cursor__ring" id="cursor-ring"></div>
+  <div id="cursor-trails"></div>
+
+  <div class="demo-app">
+    <!-- Header -->
+    <header class="demo-header">
+      <div class="demo-header__inner">
+        <a href="index.html" class="demo-header__back">
+          <i class="bi bi-arrow-left"></i>
+          <span>Voltar</span>
+        </a>
+        <div class="demo-header__title">
+          <div class="demo-header__icon">
+            <i class="bi bi-bar-chart-line-fill"></i>
+          </div>
+          <div class="demo-header__text">
+            <h1>Relatórios Inteligentes</h1>
+            <span>Análises e insights em tempo real</span>
+          </div>
+        </div>
+        <div class="demo-header__actions">
+          <a href="demo-ponto.html" class="btn btn--ghost">
+            <i class="bi bi-person-check"></i>
+            <span>Ponto</span>
+          </a>
+          <a href="demo-maquinas.html" class="btn btn--ghost">
+            <i class="bi bi-cpu"></i>
+            <span>Máquinas</span>
+          </a>
+          <button class="btn btn--primary" id="btn-generate">
+            <i class="bi bi-magic"></i>
+            <span>Gerar Relatório</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="demo-main">
+      <!-- Report Types -->
+      <div class="report-types">
+        <div class="report-type active" data-type="operational">
+          <div class="report-type__header">
+            <div class="report-type__icon report-type__icon--blue">
+              <i class="bi bi-speedometer2"></i>
+            </div>
+          </div>
+          <div class="report-type__title">Operacional</div>
+          <div class="report-type__desc">Visão geral da produtividade, eficiência e desempenho operacional da empresa.</div>
+        </div>
+        <div class="report-type" data-type="financial">
+          <div class="report-type__header">
+            <div class="report-type__icon report-type__icon--green">
+              <i class="bi bi-currency-dollar"></i>
+            </div>
+          </div>
+          <div class="report-type__title">Financeiro</div>
+          <div class="report-type__desc">Análise de custos, receitas, economia gerada e ROI das operações.</div>
+        </div>
+        <div class="report-type" data-type="hr">
+          <div class="report-type__header">
+            <div class="report-type__icon report-type__icon--purple">
+              <i class="bi bi-people-fill"></i>
+            </div>
+          </div>
+          <div class="report-type__title">Recursos Humanos</div>
+          <div class="report-type__desc">Métricas de presença, pontualidade, horas extras e produtividade por colaborador.</div>
+        </div>
+        <div class="report-type" data-type="maintenance">
+          <div class="report-type__header">
+            <div class="report-type__icon report-type__icon--orange">
+              <i class="bi bi-wrench-adjustable"></i>
+            </div>
+          </div>
+          <div class="report-type__title">Manutenção</div>
+          <div class="report-type__desc">Status de máquinas, histórico de manutenções e previsões de falhas.</div>
+        </div>
+      </div>
+
+      <!-- Dashboard Grid -->
+      <div class="dashboard-grid">
+        <!-- Main Chart -->
+        <div class="main-chart">
+          <div class="main-chart__header">
+            <h2 class="main-chart__title">Eficiência Operacional</h2>
+            <div class="period-selector">
+              <button class="period-selector__btn" data-period="7d">7 dias</button>
+              <button class="period-selector__btn active" data-period="30d">30 dias</button>
+              <button class="period-selector__btn" data-period="90d">90 dias</button>
+              <button class="period-selector__btn" data-period="1y">1 ano</button>
+            </div>
+          </div>
+          <div class="chart-area" id="main-chart">
+            <!-- Chart will be rendered here -->
+          </div>
+          <div class="chart-legend">
+            <div class="chart-legend__item">
+              <div class="chart-legend__dot chart-legend__dot--primary"></div>
+              <span>Eficiência Real</span>
+            </div>
+            <div class="chart-legend__item">
+              <div class="chart-legend__dot chart-legend__dot--secondary"></div>
+              <span>Meta</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Side Stats -->
+        <div class="side-stats">
+          <div class="side-stat">
+            <div class="side-stat__header">
+              <span class="side-stat__title">Produtividade Geral</span>
+              <span class="side-stat__badge side-stat__badge--up">+12.5%</span>
+            </div>
+            <div class="side-stat__value">94.7%</div>
+            <div class="side-stat__progress">
+              <div class="side-stat__progress-fill side-stat__progress-fill--cyan" style="width: 94.7%"></div>
+            </div>
+          </div>
+          <div class="side-stat">
+            <div class="side-stat__header">
+              <span class="side-stat__title">Economia Mensal</span>
+              <span class="side-stat__badge side-stat__badge--up">+8.2%</span>
+            </div>
+            <div class="side-stat__value">R$184k</div>
+            <div class="side-stat__progress">
+              <div class="side-stat__progress-fill side-stat__progress-fill--green" style="width: 78%"></div>
+            </div>
+          </div>
+          <div class="side-stat">
+            <div class="side-stat__header">
+              <span class="side-stat__title">Uptime Sistema</span>
+              <span class="side-stat__badge side-stat__badge--up">+0.02%</span>
+            </div>
+            <div class="side-stat__value">99.97%</div>
+            <div class="side-stat__progress">
+              <div class="side-stat__progress-fill side-stat__progress-fill--purple" style="width: 99.97%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Metrics Row -->
+      <div class="metrics-row">
+        <div class="metric-card">
+          <div class="metric-card__icon metric-card__icon--cyan">
+            <i class="bi bi-people-fill"></i>
+          </div>
+          <div class="metric-card__value" id="metric-employees">156</div>
+          <div class="metric-card__label">Colaboradores Ativos</div>
+          <div class="metric-card__trend metric-card__trend--up">
+            <i class="bi bi-arrow-up"></i>
+            <span>+5 este mês</span>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-card__icon metric-card__icon--green">
+            <i class="bi bi-clock-fill"></i>
+          </div>
+          <div class="metric-card__value" id="metric-hours">1,248h</div>
+          <div class="metric-card__label">Horas Trabalhadas Hoje</div>
+          <div class="metric-card__trend metric-card__trend--up">
+            <i class="bi bi-arrow-up"></i>
+            <span>98.2% pontualidade</span>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-card__icon metric-card__icon--purple">
+            <i class="bi bi-cpu-fill"></i>
+          </div>
+          <div class="metric-card__value" id="metric-machines">24</div>
+          <div class="metric-card__label">Máquinas Monitoradas</div>
+          <div class="metric-card__trend metric-card__trend--up">
+            <i class="bi bi-check-circle"></i>
+            <span>22 operando</span>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-card__icon metric-card__icon--orange">
+            <i class="bi bi-lightning-fill"></i>
+          </div>
+          <div class="metric-card__value" id="metric-efficiency">92%</div>
+          <div class="metric-card__label">Eficiência Média</div>
+          <div class="metric-card__trend metric-card__trend--up">
+            <i class="bi bi-arrow-up"></i>
+            <span>+4.5% vs. mês anterior</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data Panel -->
+      <div class="data-panel">
+        <div class="data-panel__header">
+          <h2 class="data-panel__title">Desempenho por Setor</h2>
+          <button class="btn btn--ghost" id="btn-export-table">
+            <i class="bi bi-download"></i>
+            <span>Exportar</span>
+          </button>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Setor</th>
+              <th>Colaboradores</th>
+              <th>Horas</th>
+              <th>Eficiência</th>
+              <th>Tendência</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="sectors-tbody">
+            <!-- Table will be rendered here -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Export Section -->
+      <div class="export-section">
+        <div class="export-section__header">
+          <h2 class="export-section__title">Exportar Relatório</h2>
+          <p class="export-section__desc">Escolha o formato de exportação para download ou compartilhamento.</p>
+        </div>
+        <div class="export-options">
+          <div class="export-option" onclick="exportReport('pdf')">
+            <div class="export-option__icon">
+              <i class="bi bi-file-earmark-pdf"></i>
+            </div>
+            <div class="export-option__title">PDF</div>
+            <div class="export-option__desc">Documento formatado</div>
+          </div>
+          <div class="export-option" onclick="exportReport('excel')">
+            <div class="export-option__icon">
+              <i class="bi bi-file-earmark-excel"></i>
+            </div>
+            <div class="export-option__title">Excel</div>
+            <div class="export-option__desc">Planilha editável</div>
+          </div>
+          <div class="export-option" onclick="exportReport('csv')">
+            <div class="export-option__icon">
+              <i class="bi bi-file-earmark-text"></i>
+            </div>
+            <div class="export-option__title">CSV</div>
+            <div class="export-option__desc">Dados brutos</div>
+          </div>
+          <div class="export-option" onclick="exportReport('email')">
+            <div class="export-option__icon">
+              <i class="bi bi-envelope"></i>
+            </div>
+            <div class="export-option__title">Email</div>
+            <div class="export-option__desc">Enviar por email</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script>
+    // =====================================================
+    // RELATÓRIOS INTELIGENTES - DEMO COMPLETA
+    // =====================================================
+
+    // Mock Data
+    const sectorsData = [
+      { name: 'Produção', icon: 'bi-gear-fill', color: 'cyan', employees: 48, hours: 384, efficiency: 96, trend: [75, 82, 88, 85, 92, 96] },
+      { name: 'Logística', icon: 'bi-truck', color: 'green', employees: 24, hours: 192, efficiency: 91, trend: [78, 80, 85, 88, 90, 91] },
+      { name: 'Qualidade', icon: 'bi-shield-check', color: 'purple', employees: 12, hours: 96, efficiency: 98, trend: [92, 94, 95, 96, 97, 98] },
+      { name: 'Manutenção', icon: 'bi-wrench', color: 'orange', employees: 18, hours: 144, efficiency: 87, trend: [80, 82, 84, 85, 86, 87] },
+      { name: 'TI', icon: 'bi-pc-display', color: 'cyan', employees: 15, hours: 120, efficiency: 94, trend: [88, 90, 91, 92, 93, 94] },
+      { name: 'RH', icon: 'bi-people', color: 'purple', employees: 8, hours: 64, efficiency: 89, trend: [82, 84, 86, 87, 88, 89] },
+    ];
+
+    // Render Main Chart
+    const renderMainChart = () => {
+      const chart = document.getElementById('main-chart');
+      const days = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
+      
+      chart.innerHTML = days.map((day, i) => {
+        const value1 = 70 + Math.random() * 28;
+        const value2 = 80 + Math.random() * 10;
+        
+        return `
+          <div class="chart-bar-group">
+            <div class="chart-bar-wrap">
+              <div class="chart-bar chart-bar--primary" style="height: ${value1}%" data-value="${Math.round(value1)}%"></div>
+              <div class="chart-bar chart-bar--secondary" style="height: ${value2}%" data-value="${Math.round(value2)}%"></div>
+            </div>
+            <span class="chart-bar-label">${day}</span>
+          </div>
+        `;
+      }).join('');
+    };
+
+    // Render Sectors Table
+    const renderSectorsTable = () => {
+      const tbody = document.getElementById('sectors-tbody');
+      
+      tbody.innerHTML = sectorsData.map(sector => {
+        const effClass = sector.efficiency >= 95 ? 'high' : sector.efficiency >= 85 ? 'medium' : 'low';
+        const trendBars = sector.trend.map(v => `<div class="mini-chart__bar" style="height: ${v * 0.32}px"></div>`).join('');
+        
+        return `
+          <tr>
+            <td>
+              <div class="sector-cell">
+                <div class="sector-icon sector-icon--${sector.color}">
+                  <i class="bi ${sector.icon}"></i>
+                </div>
+                <span>${sector.name}</span>
+              </div>
+            </td>
+            <td><strong>${sector.employees}</strong></td>
+            <td>${sector.hours}h</td>
+            <td>
+              <span class="efficiency-badge efficiency-badge--${effClass}">${sector.efficiency}%</span>
+            </td>
+            <td>
+              <div class="mini-chart">${trendBars}</div>
+            </td>
+            <td>
+              <span class="efficiency-badge efficiency-badge--high">
+                <i class="bi bi-arrow-up"></i> Positivo
+              </span>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    };
+
+    // Show Toast
+    const showToast = (title, message) => {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = 'toast toast--success';
+      toast.innerHTML = `
+        <i class="bi bi-check-circle-fill toast__icon"></i>
+        <div class="toast__content">
+          <div class="toast__title">${title}</div>
+          <div class="toast__message">${message}</div>
+        </div>
+      `;
+      container.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.style.animation = 'toastIn 0.3s ease reverse';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    };
+
+    // Export Report
+    const exportReport = (format) => {
+      const formats = {
+        pdf: 'PDF',
+        excel: 'Excel',
+        csv: 'CSV',
+        email: 'Email'
+      };
+      showToast('Exportação Iniciada', `Gerando relatório em formato ${formats[format]}...`);
+    };
+
+    // Report Type Selection
+    document.querySelectorAll('.report-type').forEach(type => {
+      type.addEventListener('click', () => {
+        document.querySelectorAll('.report-type').forEach(t => t.classList.remove('active'));
+        type.classList.add('active');
+        
+        // Animate chart refresh
+        renderMainChart();
+        showToast('Relatório Carregado', `Exibindo dados do relatório ${type.dataset.type}.`);
+      });
+    });
+
+    // Period Selection
+    document.querySelectorAll('.period-selector__btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.period-selector__btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderMainChart();
+      });
+    });
+
+    // Generate Report Button
+    document.getElementById('btn-generate').addEventListener('click', () => {
+      showToast('Relatório Gerado', 'O relatório foi atualizado com os dados mais recentes.');
+      renderMainChart();
+      renderSectorsTable();
+    });
+
+    // Export Table Button
+    document.getElementById('btn-export-table').addEventListener('click', () => {
+      showToast('Exportação', 'A tabela está sendo exportada...');
+    });
+
+    // Initialize
+    renderMainChart();
+    renderSectorsTable();
+
+    // Auto-update metrics
+    setInterval(() => {
+      const employees = 150 + Math.round(Math.random() * 10);
+      const hours = 1200 + Math.round(Math.random() * 100);
+      const efficiency = 88 + Math.round(Math.random() * 10);
+      
+      document.getElementById('metric-employees').textContent = employees;
+      document.getElementById('metric-hours').textContent = hours.toLocaleString('pt-BR') + 'h';
+      document.getElementById('metric-efficiency').textContent = efficiency + '%';
+    }, 5000);
+  </script>
+</body>
+</html>

@@ -1,116 +1,357 @@
 /* =====================================================
-   SYNCSENTRIX — script.js
+   SYNCSENTRIX — Premium Interactive Experience
 ===================================================== */
+
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ── NAV SCROLL ─────────────────────────────────── */
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 40);
-  }, { passive: true });
+  /* ═══════════════════════════════════════════════════
+     CUSTOM CURSOR
+  ═══════════════════════════════════════════════════ */
+  const cursorGlow = document.getElementById('cursor-glow');
+  const cursorDot = document.getElementById('cursor-dot');
+  let mouseX = 0, mouseY = 0;
+  let cursorX = 0, cursorY = 0;
 
-  /* ── HAMBURGER ──────────────────────────────────── */
-  const hamburger = document.getElementById('nav-hamburger');
-  const navLinks = document.getElementById('nav-links');
-  hamburger?.addEventListener('click', () => {
-    const open = navLinks.classList.toggle('nav__links--open');
-    hamburger.classList.toggle('nav__hamburger--open', open);
-    navLinks.style.cssText = open ? `
-      display:flex; flex-direction:column; position:fixed;
-      top:72px; left:0; right:0;
-      background:rgba(248,249,251,0.97); backdrop-filter:blur(20px);
-      padding:24px; gap:8px; border-bottom:1px solid rgba(47,75,124,0.12);
-      z-index:999; box-shadow:0 8px 32px rgba(47,75,124,0.12);
-    ` : '';
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    
+    cursorGlow.classList.add('active');
+    cursorGlow.style.left = mouseX + 'px';
+    cursorGlow.style.top = mouseY + 'px';
   });
 
-  /* ── SMOOTH SCROLL ──────────────────────────────── */
+  // Smooth cursor follow
+  const animateCursor = () => {
+    cursorX += (mouseX - cursorX) * 0.15;
+    cursorY += (mouseY - cursorY) * 0.15;
+    
+    if (cursorDot) {
+      cursorDot.style.left = cursorX + 'px';
+      cursorDot.style.top = cursorY + 'px';
+    }
+    
+    requestAnimationFrame(animateCursor);
+  };
+  animateCursor();
+
+  // Cursor hover effects on interactive elements
+  const hoverElements = document.querySelectorAll('a, button, .tilt-card, .magnetic-btn');
+  hoverElements.forEach(el => {
+    el.addEventListener('mouseenter', () => cursorDot?.classList.add('hover'));
+    el.addEventListener('mouseleave', () => cursorDot?.classList.remove('hover'));
+  });
+
+  /* ═══════════════════════════════════════════════════
+     MAGNETIC BUTTONS
+  ═══════════════════════════════════════════════════ */
+  const magneticBtns = document.querySelectorAll('.magnetic-btn');
+  magneticBtns.forEach(btn => {
+    btn.addEventListener('mousemove', (e) => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      
+      btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+    });
+    
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = '';
+    });
+  });
+
+  /* ═══════════════════════════════════════════════════
+     NAV SCROLL EFFECT
+  ═══════════════════════════════════════════════════ */
+  const nav = document.getElementById('nav');
+  let lastScroll = 0;
+
+  window.addEventListener('scroll', () => {
+    const currentScroll = window.scrollY;
+    
+    nav.classList.toggle('scrolled', currentScroll > 50);
+    
+    // Hide/show nav on scroll direction
+    if (currentScroll > lastScroll && currentScroll > 500) {
+      nav.style.transform = 'translateY(-100%)';
+    } else {
+      nav.style.transform = 'translateY(0)';
+    }
+    
+    lastScroll = currentScroll;
+  }, { passive: true });
+
+  /* ═══════════════════════════════════════════════════
+     HAMBURGER MENU
+  ═══════════════════════════════════════════════════ */
+  const hamburger = document.getElementById('nav-hamburger');
+  const navLinks = document.getElementById('nav-links');
+  
+  hamburger?.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('nav__links--open');
+    hamburger.classList.toggle('nav__hamburger--open', isOpen);
+    
+    if (isOpen) {
+      navLinks.style.cssText = `
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 80px;
+        left: 0;
+        right: 0;
+        background: rgba(9, 9, 11, 0.98);
+        backdrop-filter: blur(20px);
+        padding: 24px;
+        gap: 8px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        z-index: 999;
+        animation: slideDown 0.3s ease;
+      `;
+    } else {
+      navLinks.style.cssText = '';
+    }
+  });
+
+  /* ═══════════════════════════════════════════════════
+     SMOOTH SCROLL
+  ═══════════════════════════════════════════════════ */
   document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', e => {
       const target = document.querySelector(link.getAttribute('href'));
       if (target) {
         e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        if (navLinks.classList.contains('nav__links--open')) {
+        
+        const offset = 100;
+        const targetPosition = target.getBoundingClientRect().top + window.scrollY - offset;
+        
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
+        
+        // Close mobile menu if open
+        if (navLinks?.classList.contains('nav__links--open')) {
           navLinks.classList.remove('nav__links--open');
           navLinks.style.cssText = '';
+          hamburger?.classList.remove('nav__hamburger--open');
         }
       }
     });
   });
 
-  /* ── SCROLL ANIMATE ─────────────────────────────── */
-  const animEls = document.querySelectorAll(
-    '.feature-card,.step,.metric-card,.testimonial-card,.team-card,.section__header,.metrics__content,.metrics__grid,.hero__float,.demo__panel'
+  /* ═══════════════════════════════════════════════════
+     SCROLL ANIMATIONS (Intersection Observer)
+  ═══════════════════════════════════════════════════ */
+  const animatedElements = document.querySelectorAll(
+    '.bento-card, .step, .metric-card, .testimonial-card, .team-card, ' +
+    '.section__header, .demo__panel, .hero__float'
   );
-  animEls.forEach(el => el.classList.add('animate-on-scroll'));
-  const io = new IntersectionObserver(entries => {
+
+  animatedElements.forEach(el => el.classList.add('animate-on-scroll'));
+
+  const scrollObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const idx = Array.from(entry.target.parentElement?.children || []).indexOf(entry.target);
-      setTimeout(() => entry.target.classList.add('in-view'), idx * 80);
-      io.unobserve(entry.target);
+      if (entry.isIntersecting) {
+        const delay = Array.from(entry.target.parentElement?.children || [])
+          .indexOf(entry.target) * 100;
+        
+        setTimeout(() => {
+          entry.target.classList.add('in-view');
+        }, delay);
+        
+        scrollObserver.unobserve(entry.target);
+      }
     });
-  }, { threshold: 0.12 });
-  animEls.forEach(el => io.observe(el));
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-  /* ── COUNTER ANIMATION ──────────────────────────── */
-  const animateCounter = el => {
-    const target = parseFloat(el.dataset.target);
-    const suffix = el.querySelector('span')?.textContent || '';
-    const start = performance.now();
-    const tick = time => {
-      const p = Math.min((time - start) / 2000, 1);
-      const v = (1 - Math.pow(1 - p, 3)) * target;
-      el.innerHTML = (Number.isInteger(target) ? Math.round(v) : v.toFixed(2)) + `<span>${suffix}</span>`;
-      if (p < 1) requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  };
-  const cio = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { animateCounter(e.target); cio.unobserve(e.target); } });
-  }, { threshold: 0.5 });
-  document.querySelectorAll('.metric-card__value[data-target]').forEach(c => cio.observe(c));
+  animatedElements.forEach(el => scrollObserver.observe(el));
 
-  /* ── 3D CARD HOVER ──────────────────────────────── */
-  document.querySelectorAll('.feature-card,.metric-card,.testimonial-card,.team-card').forEach(card => {
-    card.addEventListener('mousemove', e => {
-      const r = card.getBoundingClientRect();
-      const rx = ((e.clientY - r.top - r.height / 2) / (r.height / 2)) * 4;
-      const ry = ((e.clientX - r.left - r.width / 2) / (r.width / 2)) * -4;
-      card.style.transform = `translateY(-6px) rotateX(${rx}deg) rotateY(${ry}deg)`;
-      card.style.transformStyle = 'preserve-3d';
+  /* ═══════════════════════════════════════════════════
+     3D TILT EFFECT
+  ═══════════════════════════════════════════════════ */
+  const tiltCards = document.querySelectorAll('.tilt-card');
+  
+  tiltCards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const rotateX = (y - centerY) / 20;
+      const rotateY = (centerX - x) / 20;
+      
+      card.style.transform = `
+        perspective(1000px) 
+        rotateX(${rotateX}deg) 
+        rotateY(${rotateY}deg) 
+        translateZ(10px)
+        scale3d(1.02, 1.02, 1.02)
+      `;
     });
-    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+    
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
   });
 
-  /* ── DASHBOARD BAR ANIMATION ────────────────────── */
-  setTimeout(() => {
-    document.querySelectorAll('.dash-bar').forEach((bar, i) => {
-      setTimeout(() => { bar.style.transition = `height 0.8s cubic-bezier(0.4,0,0.2,1) ${i * 80}ms`; }, 300);
+  /* ═══════════════════════════════════════════════════
+     COUNTER ANIMATION
+  ═══════════════════════════════════════════════════ */
+  const animateCounter = (element) => {
+    const target = parseFloat(element.dataset.target);
+    const suffix = element.querySelector('span')?.textContent || '';
+    const duration = 2000;
+    const start = performance.now();
+    
+    const tick = (currentTime) => {
+      const elapsed = currentTime - start;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // Easing function (ease-out cubic)
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = eased * target;
+      
+      if (Number.isInteger(target)) {
+        element.innerHTML = Math.round(current) + `<span>${suffix}</span>`;
+      } else {
+        element.innerHTML = current.toFixed(2) + `<span>${suffix}</span>`;
+      }
+      
+      if (progress < 1) {
+        requestAnimationFrame(tick);
+      }
+    };
+    
+    requestAnimationFrame(tick);
+  };
+
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCounter(entry.target);
+        counterObserver.unobserve(entry.target);
+      }
     });
-  }, 800);
+  }, { threshold: 0.5 });
 
-  /* ══════════════════════════════════════════════════
-     DEMO INTERATIVA
-  ══════════════════════════════════════════════════ */
+  document.querySelectorAll('.metric-card__value[data-target]').forEach(counter => {
+    counterObserver.observe(counter);
+  });
 
-  /* -- Tab switching -- */
+  /* ═══════════════════════════════════════════════════
+     HERO PARTICLES
+  ═══════════════════════════════════════════════════ */
+  const particlesContainer = document.getElementById('hero-particles');
+  
+  if (particlesContainer) {
+    const createParticle = () => {
+      const particle = document.createElement('div');
+      particle.style.cssText = `
+        position: absolute;
+        width: ${Math.random() * 4 + 2}px;
+        height: ${Math.random() * 4 + 2}px;
+        background: rgba(0, 212, 255, ${Math.random() * 0.5 + 0.2});
+        border-radius: 50%;
+        left: ${Math.random() * 100}%;
+        top: ${Math.random() * 100}%;
+        pointer-events: none;
+        animation: particleFloat ${Math.random() * 10 + 10}s linear infinite;
+      `;
+      particlesContainer.appendChild(particle);
+      
+      // Remove particle after animation
+      setTimeout(() => particle.remove(), 20000);
+    };
+    
+    // Create initial particles
+    for (let i = 0; i < 30; i++) {
+      setTimeout(createParticle, i * 200);
+    }
+    
+    // Continuously create particles
+    setInterval(createParticle, 500);
+  }
+
+  // Add particle animation styles
+  const particleStyles = document.createElement('style');
+  particleStyles.textContent = `
+    @keyframes particleFloat {
+      0% {
+        transform: translateY(0) translateX(0) scale(1);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) translateX(${Math.random() * 200 - 100}px) scale(0);
+        opacity: 0;
+      }
+    }
+    
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  `;
+  document.head.appendChild(particleStyles);
+
+  /* ═══════════════════════════════════════════════════
+     DASHBOARD BAR ANIMATION
+  ═══════════════════════════════════════════════════ */
+  const dashBars = document.querySelectorAll('.dash-bar');
+  
+  const dashObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        dashBars.forEach((bar, i) => {
+          setTimeout(() => {
+            bar.style.setProperty('--h', bar.style.getPropertyValue('--h'));
+          }, i * 100);
+        });
+        dashObserver.disconnect();
+      }
+    });
+  }, { threshold: 0.3 });
+
+  if (dashBars.length > 0) {
+    dashObserver.observe(dashBars[0].parentElement);
+  }
+
+  /* ═══════════════════════════════════════════════════
+     DEMO INTERACTIVE
+  ═══════════════════════════════════════════════════ */
+
+  // Tab switching
   document.querySelectorAll('.demo__tab').forEach(tab => {
     tab.addEventListener('click', () => {
       document.querySelectorAll('.demo__tab').forEach(t => t.classList.remove('demo__tab--active'));
       document.querySelectorAll('.demo__tab-content').forEach(c => c.classList.remove('demo__tab-content--active'));
+      
       tab.classList.add('demo__tab--active');
       const content = document.getElementById(`content-${tab.dataset.tab}`);
-      if (content) content.classList.add('demo__tab-content--active');
+      if (content) {
+        content.classList.add('demo__tab-content--active');
+      }
     });
   });
 
-  /* -- Helpers -- */
+  // Helper functions
   const fmtTime = () => new Date().toLocaleTimeString('pt-BR');
   const rand = (min, max) => min + Math.random() * (max - min);
   const randInt = (min, max) => Math.round(rand(min, max));
-  const pick = arr => arr[Math.floor(Math.random() * arr.length)];
 
   /* ── PONTO ELETRÔNICO ───────────────────────────── */
   const employees = [
@@ -133,7 +374,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const pickStatus = () => {
     const r = rand(0, 100);
     let acc = 0;
-    for (const s of statusMap) { acc += s.weight; if (r < acc) return s; }
+    for (const s of statusMap) {
+      acc += s.weight;
+      if (r < acc) return s;
+    }
     return statusMap[0];
   };
 
@@ -142,12 +386,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const ts = document.getElementById('ponto-timestamp');
     if (!tbody) return;
     if (ts) ts.textContent = fmtTime();
-    tbody.innerHTML = employees.map(emp => {
+    
+    tbody.innerHTML = employees.map((emp, i) => {
       const st = pickStatus();
       const hrs = rand(5.5, 9.5).toFixed(1);
       const init = emp.name.split(' ').map(n => n[0]).slice(0, 2).join('');
-      return `<tr class="demo__row">
-        <td><div class="demo__emp"><div class="demo__emp-avatar">${init}</div><span>${emp.name}</span></div></td>
+      
+      return `<tr class="demo__row" style="animation: fadeIn 0.3s ${i * 0.05}s both;">
+        <td>
+          <div class="demo__emp">
+            <div class="demo__emp-avatar">${init}</div>
+            <span>${emp.name}</span>
+          </div>
+        </td>
         <td><span class="demo__tag">${emp.sector}</span></td>
         <td>${emp.entry}</td>
         <td>${hrs}h</td>
@@ -173,8 +424,12 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
 
   const pickMachineStatus = () => {
-    const r = rand(0, 100); let acc = 0;
-    for (const s of machineStatus) { acc += s.w; if (r < acc) return s; }
+    const r = rand(0, 100);
+    let acc = 0;
+    for (const s of machineStatus) {
+      acc += s.w;
+      if (r < acc) return s;
+    }
     return machineStatus[0];
   };
 
@@ -183,14 +438,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const ts = document.getElementById('maquinas-timestamp');
     if (!grid) return;
     if (ts) ts.textContent = fmtTime();
-    grid.innerHTML = machines.map(m => {
+    
+    grid.innerHTML = machines.map((m, i) => {
       const st = pickMachineStatus();
       const tmp = randInt(55, 145);
       const rpm = randInt(800, 2400);
       const eff = randInt(68, 99);
       const tmpPct = Math.min(100, ((tmp - 55) / 90) * 100);
-      const tmpColor = tmp > 130 ? '#ef4444' : tmp > 105 ? '#f59e0b' : '#22c55e';
-      return `<div class="machine-card ${st.cls}">
+      const tmpColor = tmp > 130 ? '#EF4444' : tmp > 105 ? '#F59E0B' : '#22C55E';
+      
+      return `<div class="machine-card ${st.cls}" style="animation: fadeIn 0.3s ${i * 0.08}s both;">
         <div class="machine-card__header">
           <div class="machine-card__icon"><i class="bi ${m.icon}"></i></div>
           <div class="machine-card__meta">
@@ -203,7 +460,9 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="machine-metric">
             <span class="machine-metric__label">Temperatura</span>
             <div class="machine-metric__bar-wrap">
-              <div class="machine-metric__bar"><div class="machine-metric__fill" style="width:${tmpPct}%;background:${tmpColor}"></div></div>
+              <div class="machine-metric__bar">
+                <div class="machine-metric__fill" style="width:${tmpPct}%;background:${tmpColor}"></div>
+              </div>
               <span class="machine-metric__val" style="color:${tmpColor}">${tmp}°C</span>
             </div>
           </div>
@@ -214,7 +473,9 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="machine-metric">
             <span class="machine-metric__label">Eficiência</span>
             <div class="machine-metric__bar-wrap">
-              <div class="machine-metric__bar"><div class="machine-metric__fill" style="width:${eff}%;background:var(--blue)"></div></div>
+              <div class="machine-metric__bar">
+                <div class="machine-metric__fill" style="width:${eff}%;background:var(--accent-cyan)"></div>
+              </div>
               <span class="machine-metric__val">${eff}%</span>
             </div>
           </div>
@@ -229,16 +490,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const ts = document.getElementById('relatorio-timestamp');
     if (!box) return;
     if (ts) ts.textContent = fmtTime();
+    
     const total = randInt(148, 165);
     const pont = rand(86, 98).toFixed(1);
     const prod = rand(88, 99).toFixed(1);
     const maqs = randInt(18, 24);
     const uptime = rand(97.5, 99.98).toFixed(2);
+    
+    const currentHour = new Date().getHours();
     const bars = Array.from({ length: 24 }, (_, i) => {
       const h = randInt(40, 98);
-      const active = i === new Date().getHours();
+      const active = i === currentHour;
       return `<div class="report__bar${active ? ' report__bar--active' : ''}" style="--h:${h}%"><span>${i}h</span></div>`;
     }).join('');
+    
     box.innerHTML = `
       <div class="report__header">
         <div>
@@ -275,15 +540,16 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
       <div class="report__footer">
         <i class="bi bi-shield-check"></i>
-        Uptime do sistema: <strong>${uptime}%</strong> · Gerado às ${fmtTime()} · SyncSentrix v2.4
+        Uptime do sistema: <strong>${uptime}%</strong> · Gerado às ${fmtTime()} · SyncSentrix v3.0
       </div>`;
   };
 
-  /* -- Init + Refresh buttons -- */
+  // Initialize demo
   renderPonto();
   renderMachines();
   renderReport();
 
+  // Refresh buttons
   const bindRefresh = (btnId, renderFn) => {
     const btn = document.getElementById(btnId);
     btn?.addEventListener('click', () => {
@@ -297,20 +563,145 @@ document.addEventListener('DOMContentLoaded', () => {
   bindRefresh('refresh-maquinas', renderMachines);
   bindRefresh('refresh-relatorio', renderReport);
 
-  /* -- Auto-refresh every 8s while tab is visible -- */
+  // Auto-refresh every 10s
   let autoInterval;
-  const startAuto = () => {
+  const startAutoRefresh = () => {
     autoInterval = setInterval(() => {
-      const active = document.querySelector('.demo__tab--active')?.dataset.tab;
-      if (active === 'ponto') renderPonto();
-      if (active === 'maquinas') renderMachines();
-      if (active === 'relatorio') renderReport();
-    }, 8000);
+      const activeTab = document.querySelector('.demo__tab--active')?.dataset.tab;
+      if (activeTab === 'ponto') renderPonto();
+      if (activeTab === 'maquinas') renderMachines();
+      if (activeTab === 'relatorio') renderReport();
+    }, 10000);
   };
-  startAuto();
+  
+  startAutoRefresh();
+  
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) clearInterval(autoInterval);
-    else startAuto();
+    if (document.hidden) {
+      clearInterval(autoInterval);
+    } else {
+      startAutoRefresh();
+    }
   });
 
+  /* ═══════════════════════════════════════════════════
+     MINI CHART ANIMATION (Features Section)
+  ═══════════════════════════════════════════════════ */
+  const miniChartObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.mini-bar').forEach((bar, i) => {
+          setTimeout(() => {
+            bar.style.opacity = '1';
+          }, i * 100);
+        });
+        miniChartObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.mini-chart').forEach(chart => {
+    miniChartObserver.observe(chart);
+  });
+
+  /* ═══════════════════════════════════════════════════
+     TYPING EFFECT (Optional - for hero title)
+  ═══════════════════════════════════════════════════ */
+  const typeWriter = (element, text, speed = 50) => {
+    let i = 0;
+    element.textContent = '';
+    
+    const type = () => {
+      if (i < text.length) {
+        element.textContent += text.charAt(i);
+        i++;
+        setTimeout(type, speed);
+      }
+    };
+    
+    type();
+  };
+
+  /* ═══════════════════════════════════════════════════
+     PARALLAX EFFECT ON SCROLL
+  ═══════════════════════════════════════════════════ */
+  const parallaxElements = document.querySelectorAll('.hero__gradient');
+  
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    
+    parallaxElements.forEach((el, i) => {
+      const speed = (i + 1) * 0.1;
+      el.style.transform = `translateY(${scrolled * speed}px)`;
+    });
+  }, { passive: true });
+
+  /* ═══════════════════════════════════════════════════
+     INTERSECTION OBSERVER FOR METRIC BARS
+  ═══════════════════════════════════════════════════ */
+  const metricBarObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const bar = entry.target.querySelector('.metric-card__bar-fill');
+        if (bar) {
+          setTimeout(() => {
+            bar.style.width = bar.style.getPropertyValue('--w');
+          }, 300);
+        }
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.metric-card').forEach(card => {
+    metricBarObserver.observe(card);
+  });
+
+  /* ═══════════════════════════════════════════════════
+     SMOOTH REVEAL FOR LOGO STRIP
+  ═══════════════════════════════════════════════════ */
+  const logoTrack = document.querySelector('.logos__track');
+  
+  if (logoTrack) {
+    const logoObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          logoObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    logoTrack.style.opacity = '0';
+    logoTrack.style.transition = 'opacity 0.8s ease';
+    logoObserver.observe(logoTrack);
+  }
+
+  /* ═══════════════════════════════════════════════════
+     KEYBOARD NAVIGATION
+  ═══════════════════════════════════════════════════ */
+  document.addEventListener('keydown', (e) => {
+    // ESC to close mobile menu
+    if (e.key === 'Escape' && navLinks?.classList.contains('nav__links--open')) {
+      navLinks.classList.remove('nav__links--open');
+      navLinks.style.cssText = '';
+      hamburger?.classList.remove('nav__hamburger--open');
+    }
+  });
+
+  /* ═══════════════════════════════════════════════════
+     PERFORMANCE: Disable animations if user prefers
+  ═══════════════════════════════════════════════════ */
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  
+  if (prefersReducedMotion.matches) {
+    document.documentElement.style.setProperty('--duration-fast', '0s');
+    document.documentElement.style.setProperty('--duration-normal', '0s');
+    document.documentElement.style.setProperty('--duration-slow', '0s');
+    
+    // Disable cursor effects
+    if (cursorGlow) cursorGlow.style.display = 'none';
+    if (cursorDot) cursorDot.style.display = 'none';
+  }
+
+  console.log('🚀 SyncSentrix v3.0 - Premium Experience Loaded');
 });
